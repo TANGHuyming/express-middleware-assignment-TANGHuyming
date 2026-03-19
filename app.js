@@ -30,12 +30,12 @@ const option = {
     message: 'Too many requests from this IP, please try again after 1 minute'
 }
 
+// whitelist only the current development origin
 const whitelist = [
     'http://localhost:3000',
-    'http://localhost:4000',
-    'http://localhost:8080',
 ];
 
+// options for cors
 const corsOptions = {
     origin: function (origin, callback) {
         // !origin allows server-to-server or tools like Postman/Curl
@@ -49,7 +49,8 @@ const corsOptions = {
 
 // middlewares
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(cookieParser())
+app.use(cookieParser()) // for basic auth logout
+// custom ip filtering middleware
 app.use((req, res, next) => {
     const ips = ['127.0.0.1', '::1'] // Allow localhost
     if (!ips.includes(req.ip)) {
@@ -57,8 +58,9 @@ app.use((req, res, next) => {
     }
     next()
 })
-app.use(cors(corsOptions))
-app.use(rateLimit(option))
+app.use(cors(corsOptions)) // use cors middleware
+app.use(rateLimit(option)) // use rate limit middleware
+// check if server instance is valid
 app.use((req, res, next) => {
     const clientInstance = req.cookies['server-instance'];
 
@@ -70,6 +72,22 @@ app.use((req, res, next) => {
     next();
 })
 app.disable('x-powered-by')
+// used to authenticate Bearer Token
+const authenticate = (req, res, next) => {
+    const authHeader = req.get('Authorization')
+
+    if(!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).send('Unauthorized')
+    }
+
+    const token = authHeader.split(' ')[1]
+
+    if (!token || token !== process.env.APIKEY) {
+        return res.status(401).send('Unauthorized')
+    }
+
+    next()
+}
 
 // static data
 const data = {
@@ -99,7 +117,11 @@ const data = {
 }
 
 // routes
-app.get('/api/oil-prices', (req, res) => {
+app.get('/', (req, res) => {
+    res.status(200).render('home')
+})
+
+app.get('/api/oil-prices', authenticate, (req, res) => {
     res.status(200).json(data)
 })
 
@@ -109,6 +131,9 @@ app.use(basicAuth({
 }));
 
 app.get('/dashboard', (req, res) => {
+    const context = data
+    const last_updated = (new Date(context.last_updated)).toLocaleDateString('en-US')
+    context.last_updated = last_updated
     res.status(200).render('dashboard', data)
 })
 

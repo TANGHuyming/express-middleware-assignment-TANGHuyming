@@ -54,10 +54,72 @@ a:hover {
     border-top: 1px solid #ccc;
 }
 
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.card-container {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 1rem;
+    background-color: inherit;
+    color: inherit;
+    width: 100%;
+    box-shadow: 3px 8px 3px rgba(0, 0, 0, 0.473);
+    transition: all 0.3s ease-in-out;
+}
+
+.card-container:hover {
+    translate: 0 -5px;
+}
+
+.price-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+}
+
 main {
     min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
+}
+
+.home-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.about-container {
+    border: 3px solid rgb(0, 160, 0);
+    border-radius: 20px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: rgb(0, 90, 0);
+    color: white;
+    width: 100%;
+}
+
+.how-to-container {
+    border: 3px solid rgb(0, 69, 160);
+    border-radius: 20px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: rgb(0, 39, 90);
+    color: white;
+    width: 100%;
 }
