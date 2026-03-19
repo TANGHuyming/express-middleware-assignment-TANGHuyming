@@ -77,17 +77,22 @@ const authenticate = (req, res, next) => {
     const authHeader = req.get('Authorization')
 
     if(!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).send('Unauthorized')
+        return res.status(400).send('Unauthorized') // this will affect basic auth as well
     }
 
     const token = authHeader.split(' ')[1]
 
     if (!token || token !== process.env.APIKEY) {
-        return res.status(401).send('Unauthorized')
+        return res.status(400).send('Unauthorized') // this will affect basic auth as well
     }
 
     next()
 }
+const basicAuthMiddleware = basicAuth({
+    users: {'admin': 'admin'},
+    challenge: true,
+    realm: 'Restricted Area'
+})
 
 // static data
 const data = {
@@ -125,26 +130,17 @@ app.get('/api/oil-prices', authenticate, (req, res) => {
     res.status(200).json(data)
 })
 
-app.use(basicAuth({
-    users: { 'admin': 'admin' },
-    challenge: true
-}));
-
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', basicAuthMiddleware, (req, res) => {
     const context = data
     const last_updated = (new Date(context.last_updated)).toLocaleDateString('en-US')
     context.last_updated = last_updated
+    res.cookie('server-instance', seed.toString()); // set server instance
     res.status(200).render('dashboard', data)
 })
 
-app.use((req, res, next) => {
-    res.cookie('server-instance', seed.toString());
-    next();
-});
-
 app.get('/logout', (req, res) => {
     res.clearCookie('server-instance');
-    return res.status(401).send('Logged Out');
+    return res.status(401).render('logout');
 })
 
 app.use((req, res) => {
