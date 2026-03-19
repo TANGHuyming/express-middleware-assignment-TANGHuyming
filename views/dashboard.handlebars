@@ -1,0 +1,17 @@
+<main>
+    <h1>Dashboard</h1>
+    <h2>Market, {{market}}</h2>
+    <h3>Last Updated, {{last_updated}}</h3>
+    <h3>Currency, {{currency}}</h3>
+    
+    {{#each data}}
+        <div class="card-container">
+            <h3>Symbol: {{this.symbol}}</h3>
+            <h3>Name: {{this.name}}</h3>
+            <div class="price-container">
+                <p>Price: {{this.price}}</p>
+                <p>Change: {{this.change}}</p>
+            </div>
+        </div>
+    {{/each}}
+</main>
