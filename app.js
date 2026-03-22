@@ -165,7 +165,7 @@ const users = [
 
 // routes
 app.get('/', (req, res) => {
-    res.status(200).render('home')
+    return res.status(200).render('home')
 })
 
 // can't be accessed via browser
@@ -179,7 +179,7 @@ app.get('/dashboard', basicAuthMiddleware, (req, res) => {
     const last_updated = (new Date(context.last_updated)).toLocaleDateString('en-US')
     context.last_updated = last_updated
     res.cookie('server-instance', seed.toString()); // set server instance
-    res.status(200).render('dashboard', data)
+    return res.status(200).render('dashboard', data)
 })
 
 // login route
