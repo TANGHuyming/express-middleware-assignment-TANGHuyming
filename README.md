@@ -21,6 +21,9 @@ It protects an oil price endpoint using:
 - express-basic-auth
 - cookie-parser
 - dotenv
+- express-session
+- bcrypt
+- jsonwebtoken
 
 ## Project Structure
 
@@ -33,6 +36,8 @@ homework-9-secure-oil-price-TANGHuyming/
 |- views/
 |  |- home.handlebars
 |  |- dashboard.handlebars
+|  |- logout.handlebars
+|  |- login.handlebars
 |  |- 404.handlebars
 |  |- 500.handlebars
 |  |- layouts/main.handlebars
@@ -54,7 +59,7 @@ npm install
 
 ```env
 PORT=3000
-APIKEY=your_super_secret_key
+JWT_SECRET=your_super_secret_key
 ```
 
 3. Start the server:
@@ -76,7 +81,7 @@ The app applies middleware in this order:
 1. Static files
 2. Cookie parser
 3. IP filter (`127.0.0.1`, `::1` allowed)
-4. CORS whitelist (`http://localhost:3000`)
+4. CORS whitelist (`http://localhost:3000` or depending on the PORT environment variable)
 5. Rate limit (10 requests per minute per IP)
 6. Server-instance cookie validation
 7. Route-level Bearer token authentication (`/api/oil-prices`)
@@ -101,6 +106,9 @@ Authorization: Bearer <APIKEY>
 	- Credentials from current code:
 		- username: `admin`
 		- password: `admin`
+
+- `GET /login`
+	- Log in to generate your json web token
 
 - `GET /logout`
 	- Clears the `server-instance` cookie.
