@@ -1,0 +1,38 @@
+<main>
+    <h1>Login</h1>
+
+    <p>
+        Use your account credentials to sign in and access protected api routes in
+        this authentication project.
+    </p>
+
+    <h2>Before you log in</h2>
+    <ul>
+        <li>Enter your username exactly as registered.</li>
+        <li>Passwords are case-sensitive.</li>
+        <li>If login fails, check your spelling and try again.</li>
+    </ul>
+
+    <p>
+        After a successful login, your bearer token will be generated. <br>
+        Make sure to copy that token and use it for subsequent requests to the api/oil-prices endpoint. <br>
+        Also, make sure to include 'Bearer' inside your authorization header.
+    </p>
+
+    <h2>Try this dummy user</h2>
+    <div>
+        <p><strong>Username:</strong> admin</p>
+        <p><strong>Password:</strong> admin</p>
+    </div>
+
+    {{#if flash.error}}
+        <p style="color: red">
+            {{flash.error}}
+        </p>
+    {{/if}}
+    <form action="/login" method="POST" class="form-container">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Login</button>
+    </form>
+</main>

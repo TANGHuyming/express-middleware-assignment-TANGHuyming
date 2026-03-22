@@ -2,37 +2,44 @@
     <div class="home-title">
         <h1>Secure Oil Price API Demo</h1>
     </div>
-
-    <p>
-        This INF 653 project is a secure API built with Node.js and Express.
-        It protects oil price data using middleware.
-    </p>
-
-    <div class="about-container">
-        <h2>What this project does</h2>
+    <section class="hero">
         <p>
-            The API only returns data when security checks pass.
-            Requests are validated by middleware before data is sent.
+            This INF 653 project demonstrates a practical, secure API built with Node.js and Express.
+            The goal is to show how layered middleware enforces security checks before any oil-price data is returned.
+        </p>
+    </section>
+
+    <section class="about-container">
+        <h2>Overview</h2>
+        <p>
+            This app exposes an oil-price data endpoint and protects it with middleware that validates requests.
+            Only requests that meet multiple security conditions are allowed to receive data.
         </p>
         <ul>
-            <li>Middleware authentication</li>
-            <li>IP filtering</li>
-            <li>CORS control</li>
-            <li>Bearer token verification</li>
+            <li><strong>Authentication:</strong> Bearer token verification to ensure callers are authorized.</li>
+            <li><strong>IP Filtering:</strong> Requests must originate from configured, allowed IP addresses.</li>
+            <li><strong>CORS Control:</strong> Only permitted origins may access the API from browsers.</li>
+            <li><strong>Request Validation:</strong> Input checks and error responses for malformed or unauthorized calls.</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="how-to-container">
-        <h2>How to use this app</h2>
+    <section class="how-to-container">
+        <h2>Design & Architecture</h2>
         <p>
-            1) Send a request to the oil price endpoint. <br>
-            2) Include a valid Bearer token in the Authorization header. <br>
-            3) Send the request from an allowed IP. <br>
-            4) Use an allowed origin so CORS check passes. <br>
+            This app uses an Express middleware chain so each concern (auth, IP, CORS, logging) is isolated and testable.
+            Data returned by the API is intentionally minimal and can be swapped for live sources in future work.
         </p>
-    </div>
-
-    <p>
-        This project is for learning API security with middleware.
-    </p>
+        <h2>How to use basic auth</h2>
+        <ol>
+            <li>Navigate to the Dashboard page.</li>
+            <li>Enter your username and password.</li>
+            <li>View the oil price data in the page.</li>
+        </ol>
+        <h2>How to get Bearer token</h2>
+        <ol>
+            <li>Navigate to the Login page.</li>
+            <li>Follow the instructions there.</li>
+            <li>Get the oil prices data using the token and the api/oil-prices endpoint.</li>
+        </ol>
+    </section>
 </main>
