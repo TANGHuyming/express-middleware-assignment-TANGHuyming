@@ -115,7 +115,7 @@ app.disable('x-powered-by')
 function auth(req, res, next) {
     const header = req.headers.authorization
 
-    if (!header || !header.includes('Bearer ')) return res.status(401)
+    if (!header || !header.includes('Bearer ')) return res.status(401).send('Unauthorized')
 
     const token = header.split(' ')[1]
 
@@ -124,7 +124,7 @@ function auth(req, res, next) {
         req.user = decoded
         next()
     } catch {
-        res.status(403)
+        res.status(403).send('Forbidden')
     }
 }
 const basicAuthMiddleware = basicAuth({
